@@ -2,8 +2,6 @@
 /test/API/FakeServer.scala
 /app/utils/Futures.scala
 /app/services/Container.scala
-/app/repositories/implementations/file/BaseFileRepository.scala
-/app/repositories/interfaces/BaseRepo.scala
 /app/mappings/BaseJson.scala
 # Created by .ignore support plugin (hsz.mobi)
 ### Scala template

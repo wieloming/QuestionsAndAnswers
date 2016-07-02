@@ -9,4 +9,7 @@ case object Answer {
   case class text(value: String)
 }
 
+case class AnswerForCreateDto(text: Answer.text)
+case class AnswerForUpdateDto(id: Answer.id, text: Answer.text, questionId: Question.id)
+
 

@@ -3,6 +3,7 @@ package repositories.implementations.file.answer
 import java.util.concurrent.atomic.AtomicLong
 
 import domain.answer.Answer
+import domain.question.Question
 import repositories.implementations.file.BaseFileRepository
 import repositories.interfaces.AnswerRepo
 
@@ -23,5 +24,8 @@ class AnswerFileRepository extends AnswerRepo with BaseFileRepository[Answer, An
     val newObj = obj.copy(id = Some(id))
     db(id) = newObj
     Future.successful(newObj)
+  }
+  override def findByQuestionId(id: Question.id): Future[List[Answer]] = {
+    Future.successful(db.values.filter(_.questionId == id).toList)
   }
 }

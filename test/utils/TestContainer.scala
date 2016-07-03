@@ -29,7 +29,7 @@ trait TestContainer {
       Question.isMulti(false),
       Question.isActive(true)
     ),
-    List(Answer(Some(Answer.id(1)), Answer.text("text?"), Question.id(1)))
+    List(Answer(Some(Answer.id(1)), Answer.text("text?"), Question.id(1), Answer.isActive(true)))
   )
   val questionWithAnswersUpdated = QuestionWithAnswersDto(
     Question(
@@ -38,7 +38,7 @@ trait TestContainer {
       Question.isMulti(false),
       Question.isActive(true)
     ),
-    List(Answer(Some(Answer.id(1)), Answer.text("text?"), Question.id(1)))
+    List(Answer(Some(Answer.id(1)), Answer.text("text?"), Question.id(1), Answer.isActive(false)))
   )
   val questionNotActive = Question(
     Some(Question.id(1)),

@@ -1,14 +1,16 @@
 package services.question
 
 import domain.question.{Question, QuestionForCreateDto, QuestionForUpdateDto, QuestionWithAnswersDto}
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import repositories.interfaces.QuestionRepo
 import services.answer.AnswerService
 import utils.Futures._
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import scala.concurrent.Future
 
 class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) {
+
+  def findById(questionId: Question.id) = questionRepo.findById(questionId)
 
   def findWithAnswersById(id: Question.id): Future[Option[QuestionWithAnswersDto]] = {
     for {

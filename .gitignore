@@ -1,6 +1,5 @@
 /test/API/APITest.scala
 /test/API/FakeServer.scala
-/app/mappings/BaseJson.scala
 # Created by .ignore support plugin (hsz.mobi)
 ### Scala template
 *.class

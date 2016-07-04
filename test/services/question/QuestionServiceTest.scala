@@ -30,7 +30,6 @@ class QuestionServiceTest extends PlaySpecification with TestContainer {
       val newQuestion = QuestionForUpdateDto(
         Question.id(1),
         Question.text("text2"),
-        Question.isMulti(false),
         List(AnswerForUpdateDto(Answer.id(1), Answer.text("text?"), Question.id(1), Answer.isActive(false)))
       )
       val withAnswers = await(questionService.updateQuestion(newQuestion))

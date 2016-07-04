@@ -13,7 +13,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class VoteService(voteRepo: VoteRepo, questionService: QuestionService, answerService: AnswerService) {
 
-  def add(questionId: Vote.id, vote: Vote) = {
+  def add(vote: Vote) = {
     def createVoteIfValid(question: Option[Question], answer: Option[Answer]) = (question, answer) match {
       case (Some(q), Some(a)) if a.isActive.value && q.isActive.value =>
         voteRepo.create(vote).map(Option(_))
@@ -26,7 +26,9 @@ class VoteService(voteRepo: VoteRepo, questionService: QuestionService, answerSe
     } yield voteId
   }
 
-  def findForUser(id: User.id) = {
+  //TODO: filter not active
+  //TODO: what with multi
+  def findForUser(id: User.id): Future[Map[Question.id, List[Vote]]] = {
     for {
       forUser <- voteRepo.findForUser(id)
       grouped = forUser.groupBy(_.questionId)
@@ -34,7 +36,9 @@ class VoteService(voteRepo: VoteRepo, questionService: QuestionService, answerSe
     } yield sorted
   }
 
-  def findForQuestionAndUser(questionId: Question.id, userId: User.id) = {
+  //TODO: filter not active
+  //TODO: what with multi
+  def findForQuestionAndUser(questionId: Question.id, userId: User.id): Future[List[Vote]] = {
     for {
       forQuestionAndUser <- voteRepo.findForQuestionAndUser(questionId, userId)
       sorted = forQuestionAndUser.sortBy(_.time)

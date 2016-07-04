@@ -12,8 +12,8 @@ case object Question {
 }
 
 case class QuestionWithAnswersDto(question: Question, answers: List[Answer])
-case class QuestionForUpdateDto(id: Question.id, text: Question.text, isMulti: Question.isMulti, answers: List[AnswerForUpdateDto]){
-  def toQuestion(isActive: Question.isActive): Question = Question(Option(id), text, isMulti, isActive)
+case class QuestionForUpdateDto(id: Question.id, text: Question.text, answers: List[AnswerForUpdateDto]){
+  def toQuestion(isActive: Question.isActive, isMulti: Question.isMulti): Question = Question(Option(id), text, isMulti, isActive)
 }
 
 //TODO: replace answers with NEL

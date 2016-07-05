@@ -26,9 +26,7 @@ class VoteService(voteRepo: VoteRepo, questionService: QuestionService, answerSe
     } yield voteId
   }
 
-  //TODO: filter not active
-  //TODO: what with multi
-  def findForUser(id: User.id): Future[Map[Question.id, List[Vote]]] = {
+  def findForUser(id: User.Id): Future[Map[Question.Id, List[Vote]]] = {
     for {
       forUser <- voteRepo.findForUser(id)
       grouped = forUser.groupBy(_.questionId)
@@ -36,9 +34,7 @@ class VoteService(voteRepo: VoteRepo, questionService: QuestionService, answerSe
     } yield sorted
   }
 
-  //TODO: filter not active
-  //TODO: what with multi
-  def findForQuestionAndUser(questionId: Question.id, userId: User.id): Future[List[Vote]] = {
+  def findForQuestionAndUser(questionId: Question.Id, userId: User.Id): Future[List[Vote]] = {
     for {
       forQuestionAndUser <- voteRepo.findForQuestionAndUser(questionId, userId)
       sorted = forQuestionAndUser.sortBy(_.time)

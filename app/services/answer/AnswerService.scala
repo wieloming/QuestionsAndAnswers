@@ -20,16 +20,16 @@ class AnswerService(answerRepo: AnswerRepo) {
     } yield updated
   }
 
-  def findById(id: Answer.id): Future[Option[Answer]] = {
+  def findById(id: Answer.Id): Future[Option[Answer]] = {
     answerRepo.findById(id)
   }
 
-  def findByQuestionId(id: Question.id): Future[List[Answer]] = {
+  def findByQuestionId(id: Question.Id): Future[List[Answer]] = {
     answerRepo.findByQuestionId(id)
   }
 
-  def add(questionId: Question.id, answer: AnswerForCreateDto) = {
-    answerRepo.create(Answer(None, answer.text, questionId, Answer.isActive(true)))
+  def add(questionId: Question.Id, answer: AnswerForCreateDto) = {
+    answerRepo.create(Answer(None, answer.text, questionId, Answer.IsActive(true)))
   }
 
 }

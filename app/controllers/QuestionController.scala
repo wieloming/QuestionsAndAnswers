@@ -15,7 +15,7 @@ class QuestionController @Inject()(container: Container) extends BaseController 
   }
 
   def findQuestionById(id: Long) = Action.async {
-    container.questionService.findWithAnswersById(Question.id(id))
+    container.questionService.findWithAnswersById(Question.Id(id))
   }
 
   def updateQuestion() = Action.async(parse.json[QuestionForUpdateDto]) { request =>
@@ -23,6 +23,6 @@ class QuestionController @Inject()(container: Container) extends BaseController 
   }
 
   def deactivateQuestion(id: Long) = Action.async { request =>
-    container.questionService.deActivate(Question.id(id))
+    container.questionService.deActivate(Question.Id(id))
   }
 }

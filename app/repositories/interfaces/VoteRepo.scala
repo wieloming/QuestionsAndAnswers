@@ -7,7 +7,7 @@ import domain.vote.Vote
 import scala.concurrent.Future
 
 trait VoteRepo extends BaseRepo[Vote, Vote.id] {
-  def findForQuestionAndUser(questionId: Question.id, userId: User.id): Future[List[Vote]]
+  def findForQuestionAndUser(questionId: Question.Id, userId: User.Id): Future[List[Vote]]
 
-  def findForUser(id: User.id): Future[List[Vote]]
+  def findForUser(id: User.Id): Future[List[Vote]]
 }

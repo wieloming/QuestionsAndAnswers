@@ -1,7 +1,5 @@
 package domain.user
 
-import domain.Id
-
 object User {
-  case class id(value: Long) extends Id
+  case class Id(value: Long) extends domain.Id
 }

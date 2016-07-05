@@ -11,26 +11,26 @@ class QuestionServiceTest extends PlaySpecification with TestContainer {
   "QuestionService" should {
     "add question" in {
       val question = QuestionForCreateDto(
-        Question.text("text"),
-        Question.isMulti(false),
-        List(AnswerForCreateDto(Answer.text("text?")))
+        Question.Text("text"),
+        Question.IsMulti(false),
+        List(AnswerForCreateDto(Answer.Text("text?")))
       )
       val createdId = await(questionService.addQuestion(question))
-      createdId must equalTo(Question.id(1))
+      createdId must equalTo(Question.Id(1))
     }
   }
   "QuestionService" should {
     "find question" in {
-      val fromDb = await(questionService.findWithAnswersById(Question.id(1)))
+      val fromDb = await(questionService.findWithAnswersById(Question.Id(1)))
       fromDb must equalTo(Some(questionWithAnswers))
     }
   }
   "QuestionService" should {
     "update question" in {
       val newQuestion = QuestionForUpdateDto(
-        Question.id(1),
-        Question.text("text2"),
-        List(AnswerForUpdateDto(Answer.id(1), Answer.text("text?"), Question.id(1), Answer.isActive(false)))
+        Question.Id(1),
+        Question.Text("text2"),
+        List(AnswerForUpdateDto(Answer.Id(1), Answer.Text("text?"), Question.Id(1), Answer.IsActive(false)))
       )
       val withAnswers = await(questionService.updateQuestion(newQuestion))
       withAnswers must equalTo(Some(questionWithAnswersUpdated))
@@ -38,13 +38,13 @@ class QuestionServiceTest extends PlaySpecification with TestContainer {
   }
   "QuestionService" should {
     "find question after update" in {
-      val fromDb = await(questionService.findWithAnswersById(Question.id(1)))
+      val fromDb = await(questionService.findWithAnswersById(Question.Id(1)))
       fromDb must equalTo(Some(questionWithAnswersUpdated))
     }
   }
   "QuestionService" should {
     "deactivate question" in {
-      val fromDb = await(questionService.deActivate(Question.id(1)))
+      val fromDb = await(questionService.deActivate(Question.Id(1)))
       fromDb must equalTo(Some(questionNotActive))
     }
   }

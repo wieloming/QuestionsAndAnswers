@@ -10,9 +10,9 @@ import scala.concurrent.Future
 
 class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) {
 
-  def findById(questionId: Question.id) = questionRepo.findById(questionId)
+  def findById(questionId: Question.Id) = questionRepo.findById(questionId)
 
-  def findWithAnswersById(id: Question.id): Future[Option[QuestionWithAnswersDto]] = {
+  def findWithAnswersById(id: Question.Id): Future[Option[QuestionWithAnswersDto]] = {
     for {
       question <- questionRepo.findById(id)
       answers <- answerService.findByQuestionId(id)
@@ -34,14 +34,14 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
     } yield updated.map(QuestionWithAnswersDto(_, updatedAnswers))
   }
 
-  def deActivate(id: Question.id): Future[Option[Question]] = {
+  def deActivate(id: Question.Id): Future[Option[Question]] = {
     for {
       question <- questionRepo.findById(id)
-      updated <- updateQuestionIfFound(id, question, (_: Question).copy(isActive = Question.isActive(false)))
+      updated <- updateQuestionIfFound(id, question, (_: Question).copy(isActive = Question.IsActive(false)))
     } yield updated
   }
 
-  private def updateQuestionIfFound(qId: Question.id, question: Option[Question], update: Question => Question) =
+  private def updateQuestionIfFound(qId: Question.Id, question: Option[Question], update: Question => Question) =
     question match {
       case Some(q) => questionRepo.update(qId, update(q)).map(Option(_))
       case None => Future.successful(None)

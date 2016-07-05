@@ -2,6 +2,6 @@ package repositories.interfaces
 
 import domain.question.Question
 
-trait QuestionRepo extends BaseRepo[Question, Question.id] {
+trait QuestionRepo extends BaseRepo[Question, Question.Id] {
 
 }

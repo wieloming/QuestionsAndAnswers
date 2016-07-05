@@ -18,11 +18,11 @@ class VoteController @Inject()(container: Container) extends BaseController with
   }
 
   def findForUser(id: Long) = Action.async {
-    container.voteService.findForUser(User.id(id))
+    container.voteService.findForUser(User.Id(id))
   }
 
   def findForQuestionAndUser(questionId: Long, userId: Long) = Action.async {
-    container.voteService.findForQuestionAndUser(Question.id(questionId), User.id(userId))
+    container.voteService.findForQuestionAndUser(Question.Id(questionId), User.Id(userId))
   }
 
 }

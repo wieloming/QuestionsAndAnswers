@@ -12,27 +12,27 @@ class VoteServiceTest extends PlaySpecification with TestContainer {
   "VoteService" should {
     "add vote" in {
       val question = QuestionForCreateDto(
-        Question.text("text"),
-        Question.isMulti(false),
-        List(AnswerForCreateDto(Answer.text("text?")))
+        Question.Text("text"),
+        Question.IsMulti(false),
+        List(AnswerForCreateDto(Answer.Text("text?")))
       )
       //add question
       await(questionService.addQuestion(question))
 
-      val vote = Vote(None, Question.id(1), Answer.id(1), User.id(1), now)
+      val vote = Vote(None, Question.Id(1), Answer.Id(1), User.Id(1), now)
       val createdId = await(voteService.add(vote))
       createdId must equalTo(Some(Vote.id(1)))
     }
   }
   "VoteService" should {
     "find votes for user" in {
-      val fromDb = await(voteService.findForUser(User.id(1)))
+      val fromDb = await(voteService.findForUser(User.Id(1)))
       fromDb must equalTo(userVotes)
     }
   }
   "VoteService" should {
     "find votes for user and question" in {
-      val fromDb = await(voteService.findForQuestionAndUser(Question.id(1), User.id(1)))
+      val fromDb = await(voteService.findForQuestionAndUser(Question.Id(1), User.Id(1)))
       fromDb must equalTo(userAndQuestionVotes)
     }
   }

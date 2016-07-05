@@ -19,4 +19,6 @@ libraryDependencies += "org.mockito" % "mockito-core" % "1.9.5" % "test"
 
 libraryDependencies += "com.github.tototoshi" %% "play-joda-routes-binder" % "1.1.0"
 
+libraryDependencies += "org.typelevel" %% "cats" % "0.6.0"
+
 routesImport += "com.github.tototoshi.play2.routes.JodaRoutes._"

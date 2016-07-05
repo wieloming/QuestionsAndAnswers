@@ -1,6 +1,6 @@
 package controllers
 
-import javax.inject.{Singleton, _}
+import javax.inject._
 
 import domain.question.Question
 import domain.user.User

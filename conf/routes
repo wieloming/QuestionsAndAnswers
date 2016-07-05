@@ -11,3 +11,7 @@ PUT     /questions                          @controllers.QuestionController.upda
 GET     /questions/:id                      @controllers.QuestionController.findQuestionById(id: Long)
 DELETE  /questions/:id                      @controllers.QuestionController.deactivateQuestion(id: Long)
 
+# votes
+GET     /votes/:userId/:questionId          @controllers.VoteController.findForQuestionAndUser(questionId: Long, userId: Long)
+GET     /votes/:userId                      @controllers.VoteController.findForUser(userId: Long)
+POST    /votes                              @controllers.VoteController.add

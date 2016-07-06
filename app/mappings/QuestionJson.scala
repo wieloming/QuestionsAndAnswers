@@ -4,22 +4,25 @@ import cats.data._
 import domain.answer.Answer
 import domain.question._
 import play.api.libs.json._
+import cats.implicits._
 
-trait QuestionJson extends BaseJson with AnswerJson{
+trait QuestionJson extends BaseJson with AnswerJson {
 
   implicit def jsonNELWrites[T: Writes] = new Writes[NonEmptyList[T]] {
     def writes(o: NonEmptyList[T]): JsValue = {
-      val keyAsString = o.head :: o.tail
+      val keyAsString = o.unwrap
       Json.toJson(keyAsString)
     }
   }
-  implicit def mapReads[T: Reads]: Reads[NonEmptyList[T]] = new Reads[NonEmptyList[T]] {
+  //TODO: remove get
+  implicit def jsonNELReads[T: Reads]: Reads[NonEmptyList[T]] = new Reads[NonEmptyList[T]] {
     def reads(jv: JsValue): JsResult[NonEmptyList[T]] = {
       val list = jv.as[List[T]]
-      JsSuccess(NonEmptyList(list.head, list.tail))
+      JsSuccess(NonEmptyList.fromList(list).get)
     }
   }
-  implicit val mapFormat: Format[NonEmptyList[Answer]] = Format(mapReads, jsonNELWrites)
+
+  implicit val jsonNELFormat: Format[NonEmptyList[Answer]] = Format(jsonNELReads, jsonNELWrites)
 
   implicit val QuestionTextFormat = Json.format[Question.Text]
   implicit val QuestionIsActiveFormat = Json.format[Question.IsActive]

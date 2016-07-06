@@ -8,5 +8,5 @@ TODO:
 - dependency injection to Guice
 - readable json format for read and write
 - tests for json API
-- validation with NEL
+- fixed problems with NEL
 

@@ -7,6 +7,8 @@ import domain.vote.Vote
 import play.api.test.PlaySpecification
 import utils.TestContainer
 
+import cats.data.NonEmptyList
+
 class VoteServiceTest extends PlaySpecification with TestContainer {
 
   "VoteService" should {
@@ -14,7 +16,7 @@ class VoteServiceTest extends PlaySpecification with TestContainer {
       val question = QuestionForCreateDto(
         Question.Text("text"),
         Question.IsMulti(false),
-        List(AnswerForCreateDto(Answer.Text("text?")))
+        NonEmptyList(AnswerForCreateDto(Answer.Text("text?")))
       )
       //add question
       await(questionService.addQuestion(question))

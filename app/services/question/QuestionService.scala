@@ -1,5 +1,6 @@
 package services.question
 
+import cats.implicits._
 import domain.question.{Question, QuestionForCreateDto, QuestionForUpdateDto, QuestionWithAnswersDto}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import repositories.interfaces.QuestionRepo
@@ -22,7 +23,7 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
   def addQuestion(question: QuestionForCreateDto) = {
     for {
       id <- questionRepo.create(question.toQuestion)
-      answers <- Future.traverse(question.answers)(answerService.add(id, _))
+      answers <- Future.traverse(question.answers.unwrap)(answerService.add(id, _))
     } yield id
   }
 

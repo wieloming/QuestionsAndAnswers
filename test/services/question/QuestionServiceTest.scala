@@ -5,6 +5,8 @@ import domain.question.{Question, QuestionForCreateDto, QuestionForUpdateDto}
 import play.api.test.PlaySpecification
 import utils.TestContainer
 
+import cats.data.NonEmptyList
+
 
 class QuestionServiceTest extends PlaySpecification with TestContainer {
 
@@ -13,7 +15,7 @@ class QuestionServiceTest extends PlaySpecification with TestContainer {
       val question = QuestionForCreateDto(
         Question.Text("text"),
         Question.IsMulti(false),
-        List(AnswerForCreateDto(Answer.Text("text?")))
+        NonEmptyList(AnswerForCreateDto(Answer.Text("text?")))
       )
       val createdId = await(questionService.addQuestion(question))
       createdId must equalTo(Question.Id(1))

@@ -17,12 +17,12 @@ case object Question {
 
 case class QuestionWithAnswersDto(
                                    question: Question,
-                                   answers: NonEmptyList[Answer]
+                                   answers: List[Answer]
                                  )
 case class QuestionForUpdateDto(
                                  id: Question.Id,
                                  text: Question.Text,
-                                 answers: NonEmptyList[AnswerForUpdateDto]
+                                 answers: List[AnswerForUpdateDto]
                                ) {
   def toQuestion(isActive: Question.IsActive, isMulti: Question.IsMulti): Question = Question(Option(id), text, isMulti, isActive)
 }

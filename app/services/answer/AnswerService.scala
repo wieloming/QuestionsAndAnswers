@@ -9,13 +9,15 @@ import scala.concurrent.Future
 
 class AnswerService(answerRepo: AnswerRepo) {
 
-  def update(newAnswer: AnswerForUpdateDto): Future[Option[Answer]] = {
+  def update(answerDto: AnswerForUpdateDto): Future[Option[Answer]] = {
     def updateAnswerIfFound(answer: Option[Answer]) = answer match {
-      case Some(a) => answerRepo.update(newAnswer.id, newAnswer.toAnswer.validate).map(Option(_))
+      case Some(a) =>
+        val validated = answerDto.toAnswer.validate
+        answerRepo.update(answerDto.id, validated).map(Option(_))
       case None => Future.successful(None)
     }
     for {
-      answer <- answerRepo.findById(newAnswer.id)
+      answer <- answerRepo.findById(answerDto.id)
       updated <- updateAnswerIfFound(answer)
     } yield updated
   }
@@ -29,7 +31,7 @@ class AnswerService(answerRepo: AnswerRepo) {
   }
 
   def add(questionId: Question.Id, answer: AnswerForCreateDto) = {
-    answerRepo.create(Answer(None, answer.text, questionId, Answer.IsActive(true)).validate)
+    val validated = Answer(None, answer.text, questionId, Answer.IsActive(true)).validate
+    answerRepo.create(validated)
   }
-
 }

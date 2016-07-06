@@ -14,15 +14,16 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 class VoteService(voteRepo: VoteRepo, questionService: QuestionService, answerService: AnswerService) {
 
   def add(vote: Vote) = {
-    def createVoteIfValid(question: Option[Question], answer: Option[Answer]) = (question, answer) match {
-      case (Some(q), Some(a)) if a.isActive.value && q.isActive.value =>
-        voteRepo.create(vote.validate).map(Option(_))
-      case _ => Future.successful(None)
-    }
+    def createVoteIfPossible(question: Option[Question], answer: Option[Answer]) =
+      (question, answer) match {
+        case (Some(q), Some(a)) if a.isActive.value && q.isActive.value =>
+          voteRepo.create(vote.validate).map(Option(_))
+        case _ => Future.successful(None)
+      }
     for {
       question <- questionService.findById(vote.questionId)
       answer <- answerService.findById(vote.answerId)
-      voteId <- createVoteIfValid(question, answer)
+      voteId <- createVoteIfPossible(question, answer)
     } yield voteId
   }
 
@@ -40,5 +41,4 @@ class VoteService(voteRepo: VoteRepo, questionService: QuestionService, answerSe
       sorted = forQuestionAndUser.sortBy(_.time)
     } yield sorted
   }
-
 }

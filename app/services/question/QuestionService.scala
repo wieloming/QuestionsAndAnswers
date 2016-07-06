@@ -17,7 +17,8 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
     for {
       question <- questionRepo.findById(id)
       answers <- answerService.findByQuestionId(id)
-    } yield question.map(QuestionWithAnswersDto(_, answers))
+      dto = question.map(QuestionWithAnswersDto(_, answers))
+    } yield dto
   }
 
   def addQuestion(question: QuestionForCreateDto) = {
@@ -29,24 +30,26 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
   }
 
   def updateQuestion(newQuestion: QuestionForUpdateDto): Future[Option[QuestionWithAnswersDto]] = {
+    val updateModel = (q: Question) => newQuestion.toQuestion(q.isActive, q.isMulti)
     for {
       question <- questionRepo.findById(newQuestion.id)
-      updated <- updateQuestionIfFound(newQuestion.id, question, (q: Question) => newQuestion.toQuestion(q.isActive, q.isMulti))
+      updated <- updateQuestionIfFound(newQuestion.id, question, updateModel)
       updatedAnswers <- Future.flatTraverse(newQuestion.answers)(answerService.update)
     } yield updated.map(QuestionWithAnswersDto(_, updatedAnswers))
   }
 
   def deActivate(id: Question.Id): Future[Option[Question]] = {
+    val updateModel = (_: Question).copy(isActive = Question.IsActive(false))
     for {
       question <- questionRepo.findById(id)
-      updated <- updateQuestionIfFound(id, question, (_: Question).copy(isActive = Question.IsActive(false)))
+      updated <- updateQuestionIfFound(id, question, updateModel)
     } yield updated
   }
 
-  private def updateQuestionIfFound(qId: Question.Id, question: Option[Question], update: Question => Question) =
+  private def updateQuestionIfFound(qId: Question.Id, question: Option[Question], updateModel: Question => Question) =
     question match {
       case Some(q) =>
-        val validated = update(q).validate
+        val validated = updateModel(q).validate
         questionRepo.update(qId, validated).map(Option(_))
       case None => Future.successful(None)
     }

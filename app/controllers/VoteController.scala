@@ -12,7 +12,6 @@ import services.Container
 @Singleton
 class VoteController @Inject()(container: Container) extends BaseController with VoteJson {
 
-
   def add() = Action.async(parse.json[Vote]) { request =>
     container.voteService.add(request.body)
   }
@@ -24,5 +23,4 @@ class VoteController @Inject()(container: Container) extends BaseController with
   def findForQuestionAndUser(questionId: Long, userId: Long) = Action.async {
     container.voteService.findForQuestionAndUser(Question.Id(questionId), User.Id(userId))
   }
-
 }

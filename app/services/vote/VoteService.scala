@@ -16,7 +16,7 @@ class VoteService(voteRepo: VoteRepo, questionService: QuestionService, answerSe
   def add(vote: Vote) = {
     def createVoteIfValid(question: Option[Question], answer: Option[Answer]) = (question, answer) match {
       case (Some(q), Some(a)) if a.isActive.value && q.isActive.value =>
-        voteRepo.create(vote).map(Option(_))
+        voteRepo.create(vote.validate).map(Option(_))
       case _ => Future.successful(None)
     }
     for {

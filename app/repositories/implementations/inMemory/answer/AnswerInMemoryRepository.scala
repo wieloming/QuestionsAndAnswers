@@ -2,6 +2,7 @@ package repositories.implementations.inMemory.answer
 
 import java.util.concurrent.atomic.AtomicLong
 
+import domain.Validated
 import domain.answer.Answer
 import domain.question.Question
 import repositories.implementations.inMemory.BaseInMemoryRepository
@@ -13,15 +14,17 @@ class AnswerInMemoryRepository extends AnswerRepo with BaseInMemoryRepository[An
   override val idSequence = new AtomicLong(0)
   override val db = scala.collection.concurrent.TrieMap[Answer.Id, Answer]()
 
-  def create(obj: Answer): Future[Answer.Id] = {
+  def create(obj: Validated[Answer]): Future[Answer.Id] = {
+    val extracted = obj.value
     val newId = Answer.Id(idSequence.incrementAndGet())
-    val newObj = obj.copy(id = Some(newId))
+    val newObj = extracted.copy(id = Some(newId))
     db(newId) = newObj
     Future.successful(newId)
   }
 
-  def update(id: Answer.Id, obj: Answer): Future[Answer] = {
-    val newObj = obj.copy(id = Some(id))
+  def update(id: Answer.Id, obj: Validated[Answer]): Future[Answer] = {
+    val extracted = obj.value
+    val newObj = extracted.copy(id = Some(id))
     db(id) = newObj
     Future.successful(newObj)
   }

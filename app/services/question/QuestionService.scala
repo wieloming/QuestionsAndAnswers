@@ -21,8 +21,9 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
   }
 
   def addQuestion(question: QuestionForCreateDto) = {
+    val validated = question.toQuestion.validate
     for {
-      id <- questionRepo.create(question.toQuestion)
+      id <- questionRepo.create(validated)
       answers <- Future.traverse(question.answers.unwrap)(answerService.add(id, _))
     } yield id
   }
@@ -44,7 +45,9 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
 
   private def updateQuestionIfFound(qId: Question.Id, question: Option[Question], update: Question => Question) =
     question match {
-      case Some(q) => questionRepo.update(qId, update(q)).map(Option(_))
+      case Some(q) =>
+        val validated = update(q).validate
+        questionRepo.update(qId, validated).map(Option(_))
       case None => Future.successful(None)
     }
 }

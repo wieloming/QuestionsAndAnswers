@@ -2,6 +2,7 @@ package repositories.implementations.inMemory.vote
 
 import java.util.concurrent.atomic.AtomicLong
 
+import domain.Validated
 import domain.question.Question
 import domain.user.User
 import domain.vote.Vote
@@ -14,15 +15,17 @@ class VoteInMemoryRepository extends VoteRepo with BaseInMemoryRepository[Vote, 
   override val idSequence = new AtomicLong(0)
   override val db = scala.collection.concurrent.TrieMap[Vote.id, Vote]()
 
-  def create(obj: Vote): Future[Vote.id] = {
+  def create(obj: Validated[Vote]): Future[Vote.id] = {
+    val extracted = obj.value
     val newId = Vote.id(idSequence.incrementAndGet())
-    val newObj = obj.copy(id = Some(newId))
+    val newObj = extracted.copy(id = Some(newId))
     db(newId) = newObj
     Future.successful(newId)
   }
 
-  def update(id: Vote.id, obj: Vote): Future[Vote] = {
-    val newObj = obj.copy(id = Some(id))
+  def update(id: Vote.id, obj: Validated[Vote]): Future[Vote] = {
+    val extracted = obj.value
+    val newObj = extracted.copy(id = Some(id))
     db(id) = newObj
     Future.successful(newObj)
   }

@@ -11,7 +11,7 @@ class AnswerService(answerRepo: AnswerRepo) {
 
   def update(newAnswer: AnswerForUpdateDto): Future[Option[Answer]] = {
     def updateAnswerIfFound(answer: Option[Answer]) = answer match {
-      case Some(a) => answerRepo.update(newAnswer.id, newAnswer.toAnswer).map(Option(_))
+      case Some(a) => answerRepo.update(newAnswer.id, newAnswer.toAnswer.validate).map(Option(_))
       case None => Future.successful(None)
     }
     for {
@@ -29,7 +29,7 @@ class AnswerService(answerRepo: AnswerRepo) {
   }
 
   def add(questionId: Question.Id, answer: AnswerForCreateDto) = {
-    answerRepo.create(Answer(None, answer.text, questionId, Answer.IsActive(true)))
+    answerRepo.create(Answer(None, answer.text, questionId, Answer.IsActive(true)).validate)
   }
 
 }

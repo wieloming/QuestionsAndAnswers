@@ -1,12 +1,14 @@
 package repositories.interfaces
 
+import domain.Validated
+
 import scala.concurrent.Future
 
 trait BaseRepo[T, Id] {
 
-  def create(obj: T): Future[Id]
+  def create(obj: Validated[T]): Future[Id]
 
-  def update(id: Id, el: T): Future[T]
+  def update(id: Id, el: Validated[T]): Future[T]
 
   def findById(id: Id): Future[Option[T]]
 

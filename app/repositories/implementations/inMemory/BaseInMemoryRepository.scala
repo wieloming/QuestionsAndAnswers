@@ -2,6 +2,7 @@ package repositories.implementations.inMemory
 
 import java.util.concurrent.atomic.AtomicLong
 
+import domain.Validated
 import repositories.interfaces.BaseRepo
 
 import scala.collection.mutable
@@ -11,8 +12,8 @@ trait BaseInMemoryRepository[T, Id] extends BaseRepo[T, Id]{
   protected val db: mutable.Map[Id, T]
   protected val idSequence: AtomicLong
 
-  def create(obj: T): Future[Id]
-  def update(id: Id, el: T): Future[T]
+  def create(obj: Validated[T]): Future[Id]
+  def update(id: Id, el: Validated[T]): Future[T]
 
   def findById(id: Id): Future[Option[T]] = {
     Future.successful(db.get(id))

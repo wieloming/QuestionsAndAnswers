@@ -2,12 +2,15 @@ package domain.question
 
 import domain.answer.{Answer, AnswerForCreateDto, AnswerForUpdateDto}
 import cats.data.NonEmptyList
+import domain.Validated
 
 case class Question(
                      id: Option[Question.Id],
                      text: Question.Text,
                      isMulti: Question.IsMulti,
-                     isActive: Question.IsActive)
+                     isActive: Question.IsActive) {
+  def validate: Validated[Question] = Validated(this)
+}
 case object Question {
   case class Id(value: Long) extends domain.Id
   case class Text(value: String)

@@ -27,7 +27,8 @@ case class QuestionForUpdateDto(
                                  text: Question.Text,
                                  answers: List[AnswerForUpdateDto]
                                ) {
-  def toQuestion(isActive: Question.IsActive, isMulti: Question.IsMulti): Question = Question(Option(id), text, isMulti, isActive)
+  def toQuestion(isActive: Question.IsActive, isMulti: Question.IsMulti): Question =
+    Question(Option(id), text, isMulti, isActive)
 }
 
 case class QuestionForCreateDto(

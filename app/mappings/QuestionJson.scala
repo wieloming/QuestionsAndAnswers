@@ -23,7 +23,6 @@ trait QuestionJson extends BaseJson with AnswerJson {
   }
 
   implicit val jsonNELFormat: Format[NonEmptyList[Answer]] = Format(jsonNELReads, jsonNELWrites)
-
   implicit val QuestionTextFormat = Json.format[Question.Text]
   implicit val QuestionIsActiveFormat = Json.format[Question.IsActive]
   implicit val QuestionIsMultiFormat = Json.format[Question.IsMulti]
@@ -31,6 +30,5 @@ trait QuestionJson extends BaseJson with AnswerJson {
   implicit val QuestionForCreateDtoFormat = Json.format[QuestionForCreateDto]
   implicit val QuestionForUpdateDtoFormat = Json.format[QuestionForUpdateDto]
   implicit val QuestionWithAnswersDtoFormat = Json.format[QuestionWithAnswersDto]
-
 
 }

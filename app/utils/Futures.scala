@@ -1,7 +1,7 @@
 package utils
 
 import scala.concurrent.Future
-import scala.language.higherKinds
+import scala.language.{implicitConversions, higherKinds}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 object Futures {

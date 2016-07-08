@@ -1,6 +1,7 @@
 package domain.answer
 
 import domain.Validated
+import domain.exceptions.InvalidFormatException
 import domain.question.Question
 
 case class Answer(
@@ -9,15 +10,22 @@ case class Answer(
                    questionId: Question.Id,
                    isActive: Answer.IsActive
                  ) {
-  def validate: Validated[Answer] = Validated(this)
+  def validate: Validated[Answer] = {
+    if (text.length > 0) Validated(this)
+    else throw new InvalidFormatException("Invalid answer text.")
+  }
 }
 case object Answer {
   case class Id(value: Long) extends domain.Id
-  case class Text(value: String)
+  case class Text(value: String) {
+    def length = value.length
+  }
   case class IsActive(value: Boolean)
 }
 
-case class AnswerForCreateDto(text: Answer.Text)
+case class AnswerForCreateDto(text: Answer.Text) {
+  def toAnswer(questionId: Question.Id) = Answer(None, text, questionId, Answer.IsActive(true))
+}
 case class AnswerForUpdateDto(id: Answer.Id, text: Answer.Text, questionId: Question.Id, isActive: Answer.IsActive) {
   def toAnswer: Answer = Answer(Option(id), text, questionId, isActive)
 }

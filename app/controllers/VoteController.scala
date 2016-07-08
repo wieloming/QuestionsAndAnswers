@@ -2,6 +2,7 @@ package controllers
 
 import javax.inject._
 
+import actions.RecoverAction
 import domain.question.Question
 import domain.user.User
 import domain.vote.Vote
@@ -12,7 +13,7 @@ import services.Container
 @Singleton
 class VoteController @Inject()(container: Container) extends BaseController with VoteJson {
 
-  def add() = Action.async(parse.json[Vote]) { request =>
+  def add() = RecoverAction().async(parse.json[Vote]) { request =>
     container.voteService.add(request.body)
   }
 

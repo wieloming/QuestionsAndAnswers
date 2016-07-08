@@ -31,7 +31,7 @@ class AnswerService(answerRepo: AnswerRepo) {
   }
 
   def add(questionId: Question.Id, answer: AnswerForCreateDto) = {
-    val validated = Answer(None, answer.text, questionId, Answer.IsActive(true)).validate
+    val validated = answer.toAnswer(questionId).validate
     answerRepo.create(validated)
   }
 }

@@ -21,8 +21,12 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
     } yield dto
   }
 
-  def addQuestion(question: QuestionForCreateDto) = {
+  def addQuestion(question: QuestionForCreateDto): Future[Question.Id] = {
+    //TODO: fix this method
+    def validateAnswers() = question.answers.unwrap.foreach(_.toAnswer(Question.Id(0)).validate)
+
     val validated = question.toQuestion.validate
+    validateAnswers()
     for {
       id <- questionRepo.create(validated)
       answers <- Future.traverse(question.answers.unwrap)(answerService.add(id, _))
@@ -35,7 +39,8 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
       question <- questionRepo.findById(newQuestion.id)
       updated <- updateQuestionIfFound(newQuestion.id, question, updateModel)
       updatedAnswers <- Future.flatTraverse(newQuestion.answers)(answerService.update)
-    } yield updated.map(QuestionWithAnswersDto(_, updatedAnswers))
+      dto = updated.map(QuestionWithAnswersDto(_, updatedAnswers))
+    } yield dto
   }
 
   def deActivate(id: Question.Id): Future[Option[Question]] = {

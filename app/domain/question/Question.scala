@@ -33,8 +33,8 @@ case class QuestionForUpdateDto(
                                  text: Question.Text,
                                  answers: List[AnswerForUpdateDto]
                                ) {
-  def toQuestion(isActive: Question.IsActive, isMulti: Question.IsMulti): Question =
-    Question(Option(id), text, isMulti, isActive)
+  def toValidQuestion(isActive: Question.IsActive, isMulti: Question.IsMulti) =
+    Question(Option(id), text, isMulti, isActive).validate
 }
 
 case class QuestionForCreateDto(
@@ -42,5 +42,5 @@ case class QuestionForCreateDto(
                                  isMulti: Question.IsMulti,
                                  answers: NonEmptyList[AnswerForCreateDto]
                                ) {
-  def toQuestion: Question = Question(None, text, isMulti, Question.IsActive(true))
+  def toValidQuestion = Question(None, text, isMulti, Question.IsActive(true)).validate
 }

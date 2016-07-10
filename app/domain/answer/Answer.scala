@@ -24,10 +24,12 @@ case object Answer {
 }
 
 case class AnswerForCreateDto(text: Answer.Text) {
-  def toAnswer(questionId: Question.Id) = Answer(None, text, questionId, Answer.IsActive(true))
+  def toValidAnswer(questionId: Question.Id) =
+    Answer(None, text, questionId, Answer.IsActive(true)).validate
 }
 case class AnswerForUpdateDto(id: Answer.Id, text: Answer.Text, questionId: Question.Id, isActive: Answer.IsActive) {
-  def toAnswer: Answer = Answer(Option(id), text, questionId, isActive)
+  def toValidAnswer =
+    Answer(Option(id), text, questionId, isActive).validate
 }
 
 

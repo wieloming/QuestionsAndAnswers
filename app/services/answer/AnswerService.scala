@@ -12,7 +12,7 @@ class AnswerService(answerRepo: AnswerRepo) {
   def update(answerDto: AnswerForUpdateDto): Future[Option[Answer]] = {
     def updateAnswerIfFound(answer: Option[Answer]) = answer match {
       case Some(a) =>
-        val validated = answerDto.toAnswer.validate
+        val validated = answerDto.toValidAnswer
         answerRepo.update(answerDto.id, validated).map(Option(_))
       case None => Future.successful(None)
     }
@@ -31,7 +31,7 @@ class AnswerService(answerRepo: AnswerRepo) {
   }
 
   def add(questionId: Question.Id, answer: AnswerForCreateDto) = {
-    val validated = answer.toAnswer(questionId).validate
+    val validated = answer.toValidAnswer(questionId)
     answerRepo.create(validated)
   }
 }

@@ -1,6 +1,7 @@
 package services.question
 
 import cats.implicits._
+import domain.Validated
 import domain.question.{Question, QuestionForCreateDto, QuestionForUpdateDto, QuestionWithAnswersDto}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import repositories.interfaces.QuestionRepo
@@ -23,9 +24,9 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
 
   def addQuestion(question: QuestionForCreateDto): Future[Question.Id] = {
     //TODO: fix this method
-    def validateAnswers() = question.answers.unwrap.foreach(_.toAnswer(Question.Id(0)).validate)
+    def validateAnswers() = question.answers.unwrap.foreach(_.toValidAnswer(Question.Id(0)))
 
-    val validated = question.toQuestion.validate
+    val validated = question.toValidQuestion
     validateAnswers()
     for {
       id <- questionRepo.create(validated)
@@ -34,7 +35,7 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
   }
 
   def updateQuestion(newQuestion: QuestionForUpdateDto): Future[Option[QuestionWithAnswersDto]] = {
-    val updateModel = (q: Question) => newQuestion.toQuestion(q.isActive, q.isMulti)
+    val updateModel = (q: Question) => newQuestion.toValidQuestion(q.isActive, q.isMulti)
     for {
       question <- questionRepo.findById(newQuestion.id)
       updated <- updateQuestionIfFound(newQuestion.id, question, updateModel)
@@ -44,17 +45,17 @@ class QuestionService(questionRepo: QuestionRepo, answerService: AnswerService) 
   }
 
   def deActivate(id: Question.Id): Future[Option[Question]] = {
-    val updateModel = (_: Question).copy(isActive = Question.IsActive(false))
+    val updateModel = (_: Question).copy(isActive = Question.IsActive(false)).validate
     for {
       question <- questionRepo.findById(id)
       updated <- updateQuestionIfFound(id, question, updateModel)
     } yield updated
   }
 
-  private def updateQuestionIfFound(qId: Question.Id, question: Option[Question], updateModel: Question => Question) =
+  private def updateQuestionIfFound(qId: Question.Id, question: Option[Question], updateModel: Question => Validated[Question]) =
     question match {
       case Some(q) =>
-        val validated = updateModel(q).validate
+        val validated = updateModel(q)
         questionRepo.update(qId, validated).map(Option(_))
       case None => Future.successful(None)
     }

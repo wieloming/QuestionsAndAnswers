@@ -17,10 +17,10 @@ case class Answer(
 }
 case object Answer {
   case class Id(value: Long) extends domain.Id
-  case class Text(value: String) {
+  case class Text(value: String)  {
     def length = value.length
   }
-  case class IsActive(value: Boolean)
+  case class IsActive(value: Boolean) extends AnyVal
 }
 
 case class AnswerForCreateDto(text: Answer.Text) {

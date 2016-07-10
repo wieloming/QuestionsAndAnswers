@@ -10,7 +10,7 @@ trait VoteJson extends BaseJson {
 
   implicit val QuestionIdFormat = Json.format[Question.Id]
   implicit val AnswerIdFormat = Json.format[Answer.Id]
-  implicit val VoteIdFormat = Json.format[Vote.id]
+  implicit val VoteIdFormat = Json.format[Vote.Id]
   implicit val UserIdFormat = Json.format[User.Id]
   implicit val VoteFormat = Json.format[Vote]
 

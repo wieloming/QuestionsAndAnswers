@@ -17,6 +17,10 @@ class VoteController @Inject()(container: Container) extends BaseController with
     container.voteService.add(request.body)
   }
 
+  def addMultiple() = RecoverAction().async(parse.json[List[Vote]]) { request =>
+    container.voteService.addMultiple(request.body)
+  }
+
   def findForUser(id: Long) = Action.async {
     container.voteService.findForUser(User.Id(id))
   }

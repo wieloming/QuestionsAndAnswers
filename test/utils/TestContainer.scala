@@ -56,6 +56,6 @@ trait TestContainer {
     Question.IsActive(false)
   )
 
-  val userVotes = Map(Question.Id(1) -> List(Vote(Option(Vote.id(1)), Question.Id(1), Answer.Id(1), User.Id(1), now)))
-  val userAndQuestionVotes = List(Vote(Option(Vote.id(1)), Question.Id(1), Answer.Id(1), User.Id(1), now))
+  val userVotes = Map(Question.Id(1) -> List(Vote(Option(Vote.Id(1)), Question.Id(1), Answer.Id(1), User.Id(1), now)))
+  val userAndQuestionVotes = List(Vote(Option(Vote.Id(1)), Question.Id(1), Answer.Id(1), User.Id(1), now))
 }

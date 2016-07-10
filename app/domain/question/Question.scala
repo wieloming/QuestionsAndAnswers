@@ -20,8 +20,8 @@ case object Question {
   case class Text(value: String) {
     def length = value.length
   }
-  case class IsMulti(value: Boolean)
-  case class IsActive(value: Boolean)
+  case class IsMulti(value: Boolean) extends AnyVal
+  case class IsActive(value: Boolean) extends AnyVal
 }
 
 case class QuestionWithAnswersDto(

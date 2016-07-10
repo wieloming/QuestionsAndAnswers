@@ -23,7 +23,7 @@ class VoteServiceTest extends PlaySpecification with TestContainer {
 
       val vote = Vote(None, Question.Id(1), Answer.Id(1), User.Id(1), now)
       val createdId = await(voteService.add(vote))
-      createdId must equalTo(Some(Vote.id(1)))
+      createdId must equalTo(Some(Vote.Id(1)))
     }
   }
   "VoteService" should {

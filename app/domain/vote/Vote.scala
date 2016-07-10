@@ -1,13 +1,13 @@
 package domain.vote
 
-import domain.{Id, Validated}
-import domain.user.User
+import domain.Validated
 import domain.answer.Answer
 import domain.question.Question
+import domain.user.User
 import org.joda.time.DateTime
 
 case class Vote(
-                 id: Option[Vote.id],
+                 id: Option[Vote.Id],
                  questionId: Question.Id,
                  answerId: Answer.Id,
                  userId: User.Id,
@@ -16,5 +16,5 @@ case class Vote(
   def validate: Validated[Vote] = Validated(this)
 }
 case object Vote {
-  case class id(value: Long) extends Id
+  case class Id(value: Long) extends domain.Id
 }

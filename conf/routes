@@ -15,3 +15,4 @@ DELETE  /questions/:id                      @controllers.QuestionController.deac
 GET     /votes/:userId/:questionId          @controllers.VoteController.findForQuestionAndUser(questionId: Long, userId: Long)
 GET     /votes/:userId                      @controllers.VoteController.findForUser(userId: Long)
 POST    /votes                              @controllers.VoteController.add
+POST    /votes                              @controllers.VoteController.addMultiple
